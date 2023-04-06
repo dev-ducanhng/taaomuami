@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Authenticate\AuthenticateController;
+use App\Http\Controllers\Authenticate\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +17,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::post('/login',[AuthenticateController::class,'login']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/users',[LoginController::class,'index']);
+    Route::get('/index',[ProductController::class,'index']);
+    Route::get('/request',[ProductController::class,'request']);
+    Route::post('/addproduct',[ProductController::class,'addProduct']);
+    Route::post('/update',[ProductController::class,'update']);
+    Route::post('/deleted',[ProductController::class,'delete']);
 });
+   

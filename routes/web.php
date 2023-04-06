@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Authenticate\LoginController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    Route::get('/users',[LoginController::class,'index']);
 });
