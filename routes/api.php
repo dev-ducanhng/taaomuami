@@ -21,11 +21,17 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login',[AuthenticateController::class,'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/users',[LoginController::class,'index']);
-    Route::get('/index',[ProductController::class,'index']);
-    Route::get('/request',[ProductController::class,'request']);
-    Route::post('/addproduct',[ProductController::class,'addProduct']);
-    Route::post('/update',[ProductController::class,'update']);
-    Route::post('/deleted',[ProductController::class,'delete']);
+    Route::prefix('users')->group(function () {
+        Route::get('/',[LoginController::class,'index']);
+    });
+    Route::prefix('products')->group(function () {
+        Route::get('/',[ProductController::class,'index']);
+        Route::get('/detail/{id}',[ProductController::class,'show']);
+        Route::put('/detail/{id}',[ProductController::class,'update']);
+        Route::post('/store',[ProductController::class,'store']);
+        Route::delete('/{id}',[ProductController::class,'delete']);
+    });
+    
+  
 });
    

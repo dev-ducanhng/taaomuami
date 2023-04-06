@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('name');
-            $table->integer('is_deleted')->default(0);
+            $table->softDeletes();
             $table->timestamps();
-            $table->collation = 'utf8mb4_unicode_ci';
-            $table->charset='utf8';
+            // $table->collation = 'utf8mb4_unicode_ci';
+            // $table->charset='utf8';
         });
     }
 

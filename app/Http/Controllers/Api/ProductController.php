@@ -26,10 +26,10 @@ class ProductController extends Controller
         }
     }
 
-    public function request(Request $request)
+    public function show(Request $request,$id)
     {
         try {
-            $dataProduct = Product::select('*')->where('id', $request->id)->get();
+            $dataProduct = Product::select('*')->where('id', $id)->first();
             return response([
                 'status_code' => 200,
                 'data' => $dataProduct
@@ -42,12 +42,24 @@ class ProductController extends Controller
         }
     }
 
-    public function addProduct(Request $request)
+    public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:1|max:25',
+           'user_id'=>'required|numeric|min:1'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status_code' => 401,
+                'errors' => $validator->errors()
+            ]);
+        }
     
         try {
             $dataProduct = new Product();
             $dataProduct->name= $request->name;
+            $dataProduct->user_id= $request->user_id;
             $dataProduct->save();
 
             return response([
@@ -66,6 +78,17 @@ class ProductController extends Controller
     public function update(Request $request)
     {
     
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:1|max:25',
+           
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status_code' => 401,
+                'errors' => $validator->errors()
+            ]);
+        }
         try {
             $dataProduct = Product::where('id',$request->id)
             ->update([
@@ -84,17 +107,18 @@ class ProductController extends Controller
         }
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request,$id)
     {
     
         try {
-            $dataProduct = Product::where('id',$request->id)
-            ->update([
-                'is_deleted'=>1,
-            ]);
+            $dataProduct = Product::find($id);
+            if($dataProduct){
+                $dataProduct->delete();
+            }
+       
             return response([
                 'status_code' => 200,
-                'data' => $dataProduct
+                'message' => 'Xóa sản phẩm thành công'
             ]);
          
         } catch (\Exception $error) {
