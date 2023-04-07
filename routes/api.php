@@ -25,6 +25,7 @@ Route::post('/login', [AuthenticateController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('users')->group(function () {
+<<<<<<< HEAD
         Route::get('/', [LoginController::class, 'index']);
     });
 });
@@ -50,4 +51,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/store', [CartController::class, 'store']);
         Route::delete('/deleted/{id}', [CartController::class, 'delete']);
     });
+=======
+        Route::get('/',[LoginController::class,'index']);
+    });
+    Route::prefix('products')->group(function () {
+        Route::get('/',[ProductController::class,'index']);
+        Route::get('/detail/{id}',[ProductController::class,'show']);
+        Route::put('/detail/{id}',[ProductController::class,'update']);
+        Route::post('/store',[ProductController::class,'store']);
+        Route::delete('/{id}',[ProductController::class,'delete']);
+    });
+    
+  
+>>>>>>> fd44de15f497f5fb824483ce764c958d34f86394
 });
