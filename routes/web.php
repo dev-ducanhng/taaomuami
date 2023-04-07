@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authenticate\LoginController;
+use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,5 @@ Route::get('/', function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('/users',[LoginController::class,'index']);
 });
+
+Route::get('/',[TestController::class,'index']);

@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\CategoriController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Authenticate\AuthenticateController;
 use App\Http\Controllers\Authenticate\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\Group;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,14 +21,33 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('/login',[AuthenticateController::class,'login']);
+Route::post('/login', [AuthenticateController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/users',[LoginController::class,'index']);
-    Route::get('/index',[ProductController::class,'index']);
-    Route::get('/request',[ProductController::class,'request']);
-    Route::post('/addproduct',[ProductController::class,'addProduct']);
-    Route::post('/update',[ProductController::class,'update']);
-    Route::post('/deleted',[ProductController::class,'delete']);
+    Route::prefix('users')->group(function () {
+        Route::get('/', [LoginController::class, 'index']);
+    });
 });
-   
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index']);
+    Route::post('/detail/{id}', [ProductController::class, 'show']);
+    Route::post('/store', [ProductController::class, 'store']);
+    Route::put('/update/{id}', [ProductController::class, 'update']);
+    Route::delete('/{id}', [ProductController::class, 'delete']);
+});
+
+Route::prefix('categories')->group(function () {
+    Route::get('/', [CategoriController::class, 'index']);
+    Route::post('/show/{id}', [CategoriController::class, 'show']);
+    Route::post('/store', [CategoriController::class, 'store']);
+    Route::put('/update/{id}', [CategoriController::class, 'update']);
+    Route::delete('/{id}', [CategoriController::class, 'delete']);
+});
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('cart')->group(function () {
+        Route::get('/', [CartController::class, 'index']);
+        Route::post('/store', [CartController::class, 'store']);
+        Route::delete('/deleted/{id}', [CartController::class, 'delete']);
+    });
+});

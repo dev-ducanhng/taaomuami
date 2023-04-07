@@ -3,39 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+
+use App\Models\Categories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Psy\Command\WhereamiCommand;
 
-class ProductController extends Controller
+class CategoriController extends Controller
 {
     public function index()
     {
 
         try {
+            $data = Categories::all();
 
-            $dataProduct = Product::all();
             return response([
                 'status_code' => 200,
-                'data' => $dataProduct
-            ]);
-            
-        } catch (\Exception $error) {
-            return response()->json([
-                'status_code' => 500,
-                'error' => $error,
-            ]);
-        }
-    }
-
-    public function show(Request $request, $id)
-    {
-        try {
-            $dataProduct = Product::select('*')->where('id',  $id)->get();
-            return response([
-                'status_code' => 200,
-                'data' => $dataProduct
+                'data' => $data
             ]);
         } catch (\Exception $error) {
             return response()->json([
@@ -47,27 +33,31 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|min:1|max:25',
-            'user_id' => 'required|numeric|min:1'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status_code' => 401,
-                'errors' => $validator->errors()
-            ]);
-        }
 
         try {
-            $dataProduct = new Product();
-            $dataProduct->name = $request->name;
-            $dataProduct->user_id = $request->user_id;
-            $dataProduct->save();
-
+            $data = new Categories;
+            $data->name = $request->name;
+            $data->save();
             return response([
                 'status_code' => 200,
-                'data' => $dataProduct
+                'data' => $data
+            ]);
+        } catch (\Exception $error) {
+            return response()->json([
+                'status_code' => 500,
+                'error' => $error,
+            ]);
+        }
+    }
+
+    public function show(Request $request, $id)
+    {
+
+        try {
+            $data = Categories::select('name')->where('id', $id)->first();
+            return response([
+                'status_code' => 200,
+                'data' => $data
             ]);
         } catch (\Exception $error) {
             return response()->json([
@@ -90,15 +80,14 @@ class ProductController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
-
         try {
-            $dataProduct = Product::where('id', $id)
+            $data = Categories::where('id', $id)
                 ->update([
                     'name' => $request->name,
                 ]);
             return response([
                 'status_code' => 200,
-                'data' => $dataProduct
+                'data' => $data
             ]);
         } catch (\Exception $error) {
             return response()->json([
@@ -107,18 +96,17 @@ class ProductController extends Controller
             ]);
         }
     }
-
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
-        try {
-            $dataProduct = Product::find($id);
-            if ($dataProduct) {
-                $dataProduct->delete();
-            }
 
+        try {
+            $data = Categories::find($id);
+            if ($data) {
+                $data->delete();
+            }
             return response([
                 'status_code' => 200,
-                'message' => 'xoa thanh cong '
+                'message'=>'xoa thanh cong'
             ]);
         } catch (\Exception $error) {
             return response()->json([
@@ -127,4 +115,6 @@ class ProductController extends Controller
             ]);
         }
     }
+
+   
 }
