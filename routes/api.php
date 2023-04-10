@@ -49,24 +49,25 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/{id}', [CouponController::class, 'show']);
         Route::delete('/deleted/{id}', [CouponController::class, 'delete']);
     });
+    Route::prefix('products')->group(function () {
+        Route::get('/', [ProductController::class, 'index']);
+        Route::post('/detail/{id}', [ProductController::class, 'show']);
+        Route::post('/store', [ProductController::class, 'store']);
+        Route::put('/update/{id}', [ProductController::class, 'update']);
+        Route::delete('/{id}', [ProductController::class, 'delete']);
+    });
+    
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoriController::class, 'index']);
+        Route::post('/show/{id}', [CategoriController::class, 'show']);
+        Route::post('/store', [CategoriController::class, 'store']);
+        Route::put('/update/{id}', [CategoriController::class, 'update']);
+        Route::delete('/{id}', [CategoriController::class, 'delete']);
+    });
 
 });
 
 
-Route::prefix('products')->group(function () {
-    Route::get('/', [ProductController::class, 'index']);
-    Route::post('/detail/{id}', [ProductController::class, 'show']);
-    Route::post('/store', [ProductController::class, 'store']);
-    Route::put('/update/{id}', [ProductController::class, 'update']);
-    Route::delete('/{id}', [ProductController::class, 'delete']);
-});
 
-Route::prefix('categories')->group(function () {
-    Route::get('/', [CategoriController::class, 'index']);
-    Route::post('/show/{id}', [CategoriController::class, 'show']);
-    Route::post('/store', [CategoriController::class, 'store']);
-    Route::put('/update/{id}', [CategoriController::class, 'update']);
-    Route::delete('/{id}', [CategoriController::class, 'delete']);
-});
 
 

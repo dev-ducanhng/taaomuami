@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('name');
+            $table->integer('category_id');
+            $table->double('price',20,2);
+            // $table->string('code');
             $table->softDeletes();
             $table->timestamps();
             // $table->collation = 'utf8mb4_unicode_ci';
