@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('coupon', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
             $table->string('name');
+            $table->integer('value');
             $table->softDeletes();
             $table->timestamps();
-            // $table->collation = 'utf8mb4_unicode_ci';
-            // $table->charset='utf8';
+          
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('coupon');
     }
 };

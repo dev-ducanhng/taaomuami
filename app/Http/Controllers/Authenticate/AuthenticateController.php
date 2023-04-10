@@ -13,7 +13,7 @@ class AuthenticateController extends Controller
 {
     public function login(Request $request)
     {
-     
+    
         try {
             $validator = Validator::make($request->all(), [
                 'email' => 'required',
@@ -27,8 +27,9 @@ class AuthenticateController extends Controller
                     'errors' => $validator->errors()
                 ]);
             }
+         
             $credentials = request(['email', 'password']);
-        
+          
             if (!Auth::attempt($credentials)) {
                 
                 return response()->json([

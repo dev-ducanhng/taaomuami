@@ -3,23 +3,81 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Categories;
-use App\Models\Product;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class ProductController extends Controller
+class CouponController extends Controller
 {
     public function index()
     {
+        $user = Auth::user()->id;
+        try {
+            $data = Coupon::select('name')->where('user_id', $user)->get();
+            return response([
+                'status_code' => 200,
+                'data' => $data
+            ]);
+        } catch (\Exception $error) {
+            return response()->json([
+                'status_code' => 500,
+                'error' => $error,
+            ]);
+        }
+    }
+
+    public function store(Request $request)
+    {
+        $user = Auth::user()->id;
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:1|max:25',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status_code' => 401,
+                'errors' => $validator->errors()
+            ]);
+        }
+        try {
+            $data = new Coupon();
+            $data->name = $request->name;
+            $data->value = $request->value;
+            $data->user_id =  $user;
+            $data->save();
+            return response([
+                'status_code' => 200,
+                'data' => $data
+            ]);
+        } catch (\Exception $error) {
+            return response()->json([
+                'status_code' => 500,
+                'error' => $error,
+            ]);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = Auth::user()->id;
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:1|max:25',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status_code' => 401,
+                'errors' => $validator->errors()
+            ]);
+        }
 
         try {
-            $data = DB::table('products')
-                ->join('categories', 'products.categori_id', '=', 'categories.id')
-                ->select('products.name as product_name  ', 'cost', 'promotional_price', 'categories.name as categories_name')
-                ->get();
+            $data = Coupon::where('user_id', $user)->where('id', $id)
+                ->update([
+                    'name' => $request->name,
+                    'value' => $request->value
+                ]);
 
             return response([
                 'status_code' => 200,
@@ -33,15 +91,14 @@ class ProductController extends Controller
         }
     }
 
-
     public function show($id)
     {
+        $user = Auth::user()->id;
         try {
-            $dataProduct = Product::select('*')->where('id',  $id)->get();
-
+            $data = Coupon::select('*')->where('user_id', $user)->where('id', $id)->get();
             return response([
                 'status_code' => 200,
-                'data' => $dataProduct
+                'data' => $data
             ]);
         } catch (\Exception $error) {
             return response()->json([
@@ -50,89 +107,14 @@ class ProductController extends Controller
             ]);
         }
     }
-
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|min:1|max:25',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status_code' => 401,
-                'errors' => $validator->errors()
-            ]);
-        }
-
-        try {
-
-
-            $dataProduct = new Product();
-            $dataProduct->name = $request->name;
-            $dataProduct->user_id = $request->user_id;
-            $dataProduct->cost = $request->cost;
-            $dataProduct->promotional_price = promotionPercentage($dataProduct->cost,  $request->value);
-            $dataProduct->save();
-
-            return response([
-                'status_code' => 200,
-                'data' => $dataProduct
-            ]);
-        } catch (\Exception $error) {
-            return response()->json([
-                'status_code' => 500,
-                'error' => $error,
-            ]);
-        }
-    }
-
-    public function update(Request $request, $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|min:1|max:25',
-
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status_code' => 401,
-                'errors' => $validator->errors()
-
-            ]);
-        }
-
-        try {
-            $dataProduct = Product::where('id', $id)
-                ->update([
-                    'name' => $request->name,
-                ]);
-            return response([
-                'status_code' => 200,
-                'data' => $dataProduct
-            ]);
-        } catch (\Exception $error) {
-            return response()->json([
-                'status_code' => 500,
-                'error' => $error,
-            ]);
-        }
-    }
-
 
     public function delete($id)
-
     {
         try {
-            $dataProduct = Product::find($id);
-
-            if ($dataProduct) {
-                $dataProduct->delete();
-            }
-
+            Coupon::where('id', $id)->delete();
             return response([
                 'status_code' => 200,
-                'message' => 'xoa thanh cong '
-
+                'message' => 'xoa thanh cong'
             ]);
         } catch (\Exception $error) {
             return response()->json([

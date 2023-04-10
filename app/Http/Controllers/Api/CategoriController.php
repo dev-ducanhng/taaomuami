@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 
 use App\Models\Categories;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Psy\Command\WhereamiCommand;
 
 class CategoriController extends Controller
 {
@@ -33,7 +31,15 @@ class CategoriController extends Controller
 
     public function store(Request $request)
     {
-
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:1|max:25'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status_code' => 401,
+                'errors' => $validator->errors()
+            ]);
+        }
         try {
             $data = new Categories;
             $data->name = $request->name;
@@ -71,7 +77,6 @@ class CategoriController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:1|max:25',
-
         ]);
 
         if ($validator->fails()) {
@@ -103,10 +108,11 @@ class CategoriController extends Controller
             $data = Categories::find($id);
             if ($data) {
                 $data->delete();
+                Product::where('categori_id', $id)->delete();
             }
             return response([
                 'status_code' => 200,
-                'message'=>'xoa thanh cong'
+                'message' => 'xoa thanh cong'
             ]);
         } catch (\Exception $error) {
             return response()->json([
@@ -115,6 +121,4 @@ class CategoriController extends Controller
             ]);
         }
     }
-
-   
 }
