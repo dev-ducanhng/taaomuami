@@ -7,6 +7,7 @@ use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -37,7 +38,6 @@ class CartController extends Controller
     public function store()
     {
         $user = Auth::user()->id;
-
         try {
             $data =  DB::table('users')
                 ->join('products', 'users.id', '=', 'products.user_id')
@@ -46,7 +46,7 @@ class CartController extends Controller
                 ->where('users.id', $user)
                 ->where('products.deleted_at', null)
                 ->first();
-                
+
             $dataCart = new Cart();
             $dataCart->user_id = $user;
             $dataCart->product_id = $data->product_id;
@@ -64,13 +64,12 @@ class CartController extends Controller
         }
     }
 
-    public function delete($id)
+    public function delete()
     {
-        $data = Cart::find($id);
+        $user = Auth::user()->id;
+
         try {
-            if ($data) {
-                $data->delete();
-            }
+            Cart::where('user_id', $user)->delete();
             return response([
                 'status_code' => 200,
                 'message' => 'xoa thanh cong'

@@ -3,20 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-
-use App\Models\Categories;
-use App\Models\Product;
+use App\Models\Coupon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class CategoriController extends Controller
+class CouponController extends Controller
 {
     public function index()
     {
-
+        $user = Auth::user()->id;
         try {
-            $data = Categories::all();
-
+            $data = Coupon::select('name')->where('user_id', $user)->get();
             return response([
                 'status_code' => 200,
                 'data' => $data
@@ -31,9 +29,11 @@ class CategoriController extends Controller
 
     public function store(Request $request)
     {
+        $user = Auth::user()->id;
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:1|max:25'
+            'name' => 'required|min:1|max:25',
         ]);
+
         if ($validator->fails()) {
             return response()->json([
                 'status_code' => 401,
@@ -41,26 +41,11 @@ class CategoriController extends Controller
             ]);
         }
         try {
-            $data = new Categories;
+            $data = new Coupon();
             $data->name = $request->name;
+            $data->value = $request->value;
+            $data->user_id =  $user;
             $data->save();
-            return response([
-                'status_code' => 200,
-                'data' => $data
-            ]);
-        } catch (\Exception $error) {
-            return response()->json([
-                'status_code' => 500,
-                'error' => $error,
-            ]);
-        }
-    }
-
-    public function show(Request $request, $id)
-    {
-
-        try {
-            $data = Categories::select('name')->where('id', $id)->first();
             return response([
                 'status_code' => 200,
                 'data' => $data
@@ -75,6 +60,7 @@ class CategoriController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user = Auth::user()->id;
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:1|max:25',
         ]);
@@ -85,11 +71,14 @@ class CategoriController extends Controller
                 'errors' => $validator->errors()
             ]);
         }
+
         try {
-            $data = Categories::where('id', $id)
+            $data = Coupon::where('user_id', $user)->where('id', $id)
                 ->update([
                     'name' => $request->name,
+                    'value' => $request->value
                 ]);
+
             return response([
                 'status_code' => 200,
                 'data' => $data
@@ -101,15 +90,28 @@ class CategoriController extends Controller
             ]);
         }
     }
+
+    public function show($id)
+    {
+        $user = Auth::user()->id;
+        try {
+            $data = Coupon::select('*')->where('user_id', $user)->where('id', $id)->get();
+            return response([
+                'status_code' => 200,
+                'data' => $data
+            ]);
+        } catch (\Exception $error) {
+            return response()->json([
+                'status_code' => 500,
+                'error' => $error,
+            ]);
+        }
+    }
+
     public function delete($id)
     {
-
         try {
-            $data = Categories::find($id);
-            if ($data) {
-                $data->delete();
-                Product::where('categori_id', $id)->delete();
-            }
+            Coupon::where('id', $id)->delete();
             return response([
                 'status_code' => 200,
                 'message' => 'xoa thanh cong'
