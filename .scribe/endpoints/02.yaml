@@ -1,0 +1,271 @@
+name: Discount
+description: |-
+
+  Danh sách api liên quan tới danh mục
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/discount
+    metadata:
+      groupName: Discount
+      groupDescription: |-
+
+        Danh sách api liên quan tới danh mục
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/discount/store
+    metadata:
+      groupName: Discount
+      groupDescription: |-
+
+        Danh sách api liên quan tới danh mục
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      discount:
+        name: discount
+        description: 'Must be at least 1 character. Must not be greater than 25 characters.'
+        required: true
+        example: ydzpoi
+        type: string
+        custom: []
+      product_id:
+        name: product_id
+        description: 'Must be at least 1.'
+        required: true
+        example: 87
+        type: number
+        custom: []
+      end_date:
+        name: end_date
+        description: 'Must be a valid date in the format <code>H:i</code>. Must be a date after <code>time_start</code>.'
+        required: false
+        example: '1996-07-15'
+        type: string
+        custom: []
+      start_date:
+        name: start_date
+        description: 'Must be a valid date in the format <code>H:i</code>.'
+        required: false
+        example: '10:14'
+        type: string
+        custom: []
+    cleanBodyParameters:
+      discount: ydzpoi
+      product_id: 87
+      end_date: '1996-07-15'
+      start_date: '10:14'
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+    uri: 'api/discount/update/{id}'
+    metadata:
+      groupName: Discount
+      groupDescription: |-
+
+        Danh sách api liên quan tới danh mục
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the update.'
+        required: true
+        example: qui
+        type: string
+        custom: []
+    cleanUrlParameters:
+      id: qui
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      discount:
+        name: discount
+        description: 'Must be at least 1 character. Must not be greater than 25 characters.'
+        required: true
+        example: mflftwxbgnpaahhjmfw
+        type: string
+        custom: []
+      product_id:
+        name: product_id
+        description: 'Must be at least 1.'
+        required: true
+        example: 22
+        type: number
+        custom: []
+      end_date:
+        name: end_date
+        description: 'Must be a valid date in the format <code>H:i</code>. Must be a date after <code>time_start</code>.'
+        required: false
+        example: '2041-05-18'
+        type: string
+        custom: []
+      start_date:
+        name: start_date
+        description: 'Must be a valid date in the format <code>H:i</code>.'
+        required: false
+        example: '10:14'
+        type: string
+        custom: []
+    cleanBodyParameters:
+      discount: mflftwxbgnpaahhjmfw
+      product_id: 22
+      end_date: '2041-05-18'
+      start_date: '10:14'
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/discount/{id}'
+    metadata:
+      groupName: Discount
+      groupDescription: |-
+
+        Danh sách api liên quan tới danh mục
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the discount.'
+        required: true
+        example: 2
+        type: integer
+        custom: []
+    cleanUrlParameters:
+      id: 2
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/discount/deleted/{id}'
+    metadata:
+      groupName: Discount
+      groupDescription: |-
+
+        Danh sách api liên quan tới danh mục
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the deleted.'
+        required: true
+        example: incidunt
+        type: string
+        custom: []
+    cleanUrlParameters:
+      id: incidunt
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

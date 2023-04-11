@@ -8,12 +8,24 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 
+/**
+ * @group User
+ *
+ * Danh sách Api liên quan tới User 
+ */
 class UserController extends Controller
 {
     public function index()
     {
+        /**
+         * Danh sách user 
+         *
+         * API này sẽ trả về thông tin hiển thị user 
+         *
+         * 
+         * @return \Illuminate\Http\JsonResponse
+         */
         try {
             $data = User::all();
             return response([
@@ -30,6 +42,14 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        /**
+         * Chỉnh sửa thông tin user  
+         *
+         * API này sẽ Chỉnh sửa thông tin user 
+         *validator dữ liệu đầu vào 
+          * @param Request $request
+         * @return \Illuminate\Http\JsonResponse
+         */
         $user = Auth::user()->id;
 
         $validator = Validator::make($request->all(), [
@@ -65,6 +85,4 @@ class UserController extends Controller
             ]);
         }
     }
-
-   
 }

@@ -3,18 +3,37 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Coupon;
+
+use App\Models\Discount;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class CouponController extends Controller
+ /**
+     * @group Discount
+     *
+     * Danh sách api liên quan tới danh mục 
+     */
+class DiscountController extends Controller
 {
+   
+
+
     public function index()
     {
+        /**
+         * Danh sách mã giảm giá 
+         *
+         * 
+         *Api hiển thị danh sách mã giảm giá ứng với từng user 
+         *
+         * @return \Illuminate\Http\JsonResponse
+         */
+
         $user = Auth::user()->id;
         try {
-            $data = Coupon::select('name')->where('user_id', $user)->get();
+            $data = Discount::select('*')->where('user_id', $user)->get();
             return response([
                 'status_code' => 200,
                 'data' => $data
@@ -27,11 +46,25 @@ class CouponController extends Controller
         }
     }
 
+
     public function store(Request $request)
     {
+
+        /**
+         * Thêm mã giảm giá 
+         *
+         * 
+         *Api  thêm mã giảm giá ứng với user đăng nhập 
+         * @param Request $request
+         * @return \Illuminate\Http\JsonResponse
+         */
         $user = Auth::user()->id;
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:1|max:25',
+            'discount' => 'required|min:1|max:25',
+            'product_id' => 'required|numeric|min:1|exists:products,id',
+            'end_date' => 'date_format:H:i|after:time_start',
+            'start_date' => 'date_format:H:i'
+
         ]);
 
         if ($validator->fails()) {
@@ -41,10 +74,11 @@ class CouponController extends Controller
             ]);
         }
         try {
-            $data = new Coupon();
-            $data->name = $request->name;
-            $data->value = $request->value;
+            $data = new Discount();
+            $data->discount = $request->discount;
+            $data->product_id = $request->product_id;
             $data->user_id =  $user;
+
             $data->save();
             return response([
                 'status_code' => 200,
@@ -60,9 +94,21 @@ class CouponController extends Controller
 
     public function update(Request $request, $id)
     {
+        /**
+         * Chỉnh sửa  mã giảm giá 
+         *
+         * 
+         *Api  chỉnh sửa mã giảm giá ứng với user đăng nhập 
+         * @param Request $request
+         * @param id
+         * @return \Illuminate\Http\JsonResponse
+         */
         $user = Auth::user()->id;
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:1|max:25',
+            'discount' => 'required|min:1|max:25',
+            'product_id' => 'required|numeric|min:1|exists:products,id',
+            'end_date' => 'date_format:H:i|after:time_start',
+            'start_date' => 'date_format:H:i'
         ]);
 
         if ($validator->fails()) {
@@ -73,10 +119,12 @@ class CouponController extends Controller
         }
 
         try {
-            $data = Coupon::where('user_id', $user)->where('id', $id)
+            $data = Discount::where('user_id', $user)->where('id', $id)
                 ->update([
-                    'name' => $request->name,
-                    'value' => $request->value
+                    'discount' => $request->discount,
+                    'product_id' => $request->product_id,
+                    'end_date' => $request->end_date,
+                    'start_date' => $request->start_date,
                 ]);
 
             return response([
@@ -91,11 +139,21 @@ class CouponController extends Controller
         }
     }
 
+
     public function show($id)
     {
+        /**
+         * Hiển thị chi tiết  mã giảm giá 
+         *
+         * 
+         *Api  hiển thị mã giảm giá ứng với user đăng nhập và id
+         * @param Request $request
+         * @param id
+         * @return \Illuminate\Http\JsonResponse
+         */
         $user = Auth::user()->id;
         try {
-            $data = Coupon::select('*')->where('user_id', $user)->where('id', $id)->get();
+            $data = Discount::select('*')->where('user_id', $user)->where('id', $id)->get();
             return response([
                 'status_code' => 200,
                 'data' => $data
@@ -108,10 +166,23 @@ class CouponController extends Controller
         }
     }
 
+
+
     public function delete($id)
     {
+        /**
+         * Xóa mềm  mã giảm giá 
+         *
+         * 
+         *Api xóa mềm mã giảm giá ứng với user đăng nhập và id
+         * @param Request $request
+         * @param id
+         * @return \Illuminate\Http\JsonResponse
+         */
+
+        $user = Auth::user()->id;
         try {
-            Coupon::where('id', $id)->delete();
+            Discount::where('id', $id)->where('user_id', $user)->delete();
             return response([
                 'status_code' => 200,
                 'message' => 'xoa thanh cong'

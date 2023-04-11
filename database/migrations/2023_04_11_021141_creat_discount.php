@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coupon', function (Blueprint $table) {
+        Schema::create('discount', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('name');
-            $table->integer('value');
+            $table->integer('product_id');
+            $table->string('discount');
             $table->softDeletes();
+            $table->DATETIME('end_date');
+            $table->DATETIME('start_date');
             $table->timestamps();
           
         });
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('coupon');
+        //
     }
 };

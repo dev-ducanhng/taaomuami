@@ -1,0 +1,545 @@
+openapi: 3.0.3
+info:
+  title: Laravel
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/categories:
+    get:
+      summary: 'Danh sách danh mục'
+      operationId: danhSchDanhMc
+      description: 'Api hiển thị danh sách danh mục sản phẩm'
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Category
+      security: []
+  '/api/categories/show/{id}':
+    post:
+      summary: ''
+      operationId: postApiCategoriesShowId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Category
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the show.'
+        example: eaque
+        required: true
+        schema:
+          type: string
+  /api/categories/store:
+    post:
+      summary: ''
+      operationId: postApiCategoriesStore
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 25 characters.'
+                  example: dj
+              required:
+                - name
+      security: []
+  '/api/categories/update/{id}':
+    put:
+      summary: ''
+      operationId: putApiCategoriesUpdateId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 25 characters.'
+                  example: ugrr
+              required:
+                - name
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the update.'
+        example: omnis
+        required: true
+        schema:
+          type: string
+  '/api/categories/{id}':
+    delete:
+      summary: ''
+      operationId: deleteApiCategoriesId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Category
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the category.'
+        example: error
+        required: true
+        schema:
+          type: string
+  /api/discount:
+    get:
+      summary: ''
+      operationId: getApiDiscount
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Discount
+      security: []
+  /api/discount/store:
+    post:
+      summary: ''
+      operationId: postApiDiscountStore
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Discount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                discount:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 25 characters.'
+                  example: ydzpoi
+                product_id:
+                  type: number
+                  description: 'Must be at least 1.'
+                  example: 87
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>H:i</code>. Must be a date after <code>time_start</code>.'
+                  example: '1996-07-15'
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>H:i</code>.'
+                  example: '10:14'
+              required:
+                - discount
+                - product_id
+      security: []
+  '/api/discount/update/{id}':
+    put:
+      summary: ''
+      operationId: putApiDiscountUpdateId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Discount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                discount:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 25 characters.'
+                  example: mflftwxbgnpaahhjmfw
+                product_id:
+                  type: number
+                  description: 'Must be at least 1.'
+                  example: 22
+                end_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>H:i</code>. Must be a date after <code>time_start</code>.'
+                  example: '2041-05-18'
+                start_date:
+                  type: string
+                  description: 'Must be a valid date in the format <code>H:i</code>.'
+                  example: '10:14'
+              required:
+                - discount
+                - product_id
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the update.'
+        example: qui
+        required: true
+        schema:
+          type: string
+  '/api/discount/{id}':
+    get:
+      summary: ''
+      operationId: getApiDiscountId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Discount
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the discount.'
+        example: 2
+        required: true
+        schema:
+          type: integer
+  '/api/discount/deleted/{id}':
+    delete:
+      summary: ''
+      operationId: deleteApiDiscountDeletedId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Discount
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the deleted.'
+        example: incidunt
+        required: true
+        schema:
+          type: string
+  /api/login:
+    post:
+      summary: ''
+      operationId: postApiLogin
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/users:
+    get:
+      summary: ''
+      operationId: getApiUsers
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  /api/cart:
+    get:
+      summary: ''
+      operationId: getApiCart
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  /api/cart/store:
+    post:
+      summary: ''
+      operationId: postApiCartStore
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/cart/deleted:
+    delete:
+      summary: ''
+      operationId: deleteApiCartDeleted
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/products:
+    get:
+      summary: 'Danh sách sản phẩm'
+      operationId: danhSchSnPhm
+      description: "API này sẽ trả về thông tin hiển thị sản phẩm và mã giảm giá theo từng sản phẩm\nlist ra mã giảm giá cho người dùng lựa chọn"
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Product
+      security: []
+  '/api/products/detail/{id}':
+    post:
+      summary: 'Chi tiết sản phẩm theo id'
+      operationId: chiTitSnPhmTheoId
+      description: 'API này sẽ trả về thông tin hiển thị sản phẩm và mã giảm giá theo từng sản phẩm'
+      parameters: []
+      responses: {  }
+      tags:
+        - Product
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the detail.'
+        example: odit
+        required: true
+        schema:
+          type: string
+  /api/products/store:
+    post:
+      summary: 'Thêm sản phẩm'
+      operationId: thmSnPhm
+      description: "API này thêm thông tin sản phẩm vào db\nlist ra mã giảm giá cho người dùng lựa chọn"
+      parameters: []
+      responses: {  }
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 25 characters.'
+                  example: mzvnihoqib
+                category_id:
+                  type: number
+                  description: 'Must be at least 1.'
+                  example: 19
+              required:
+                - name
+                - category_id
+      security: []
+  '/api/products/update/{id}':
+    put:
+      summary: 'Chỉnh sửa thông tin sản phẩm'
+      operationId: chnhSaThngTinSnPhm
+      description: "API này sửa thông tin sản phẩm và lưu vào db\nlist ra mã giảm giá cho người dùng lựa chọn"
+      parameters: []
+      responses: {  }
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 25 characters.'
+                  example: dcgtrvwewpsdjn
+              required:
+                - name
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the update.'
+        example: non
+        required: true
+        schema:
+          type: string
+  '/api/products/{id}':
+    delete:
+      summary: 'Xóa mềm dữ liệu'
+      operationId: xaMmDLiu
+      description: 'API này xóa mềm dữ liệu dựa vào id và lưu vào db'
+      parameters: []
+      responses: {  }
+      tags:
+        - Product
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the product.'
+        example: 2
+        required: true
+        schema:
+          type: integer
+  /api/user:
+    get:
+      summary: ''
+      operationId: getApiUser
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - User
+      security: []
+  /api/user/update:
+    put:
+      summary: ''
+      operationId: putApiUserUpdate
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must be at least 1 character. Must not be greater than 25 characters.'
+                  example: kbrvduurpgegryxhodyp
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: mante.larue@example.com
+                password:
+                  type: string
+                  description: 'Must be between 4 and 20 characters.'
+                  example: '9x4r1fM#~*EuoG#^'
+                password_confirmation:
+                  type: string
+                  description: 'The value and <code>password</code> must match.'
+                  example: null
+              required:
+                - name
+                - password
+      security: []
+tags:
+  -
+    name: Category
+    description: "\nDanh sách api liên quan tới danh mục"
+  -
+    name: Discount
+    description: "\nDanh sách api liên quan tới danh mục"
+  -
+    name: Endpoints
+    description: ''
+  -
+    name: Product
+    description: "\nDanh sách api liên quan tới sản phẩm"
+  -
+    name: User
+    description: "\nDanh sách Api liên quan tới User"

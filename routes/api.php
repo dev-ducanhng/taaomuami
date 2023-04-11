@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoriController;
-use App\Http\Controllers\Api\CouponController;
+use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Authenticate\AuthenticateController;
@@ -42,12 +42,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('update', [UserController::class, 'update']);
     });
 
-    Route::prefix('coupon')->group(function () {
-        Route::get('/', [CouponController::class, 'index']);
-        Route::post('/store', [CouponController::class, 'store']);
-        Route::put('update/{id}', [CouponController::class, 'update']);
-        Route::get('/{id}', [CouponController::class, 'show']);
-        Route::delete('/deleted/{id}', [CouponController::class, 'delete']);
+    Route::prefix('discount')->group(function () {
+        Route::get('/', [DiscountController::class, 'index']);
+        Route::post('/store', [DiscountController::class, 'store']);
+        Route::put('update/{id}', [DiscountController::class, 'update']);
+        Route::get('/{id}', [DiscountController::class, 'show']);
+        Route::delete('/deleted/{id}', [DiscountController::class, 'delete']);
     });
     Route::prefix('products')->group(function () {
         Route::get('/', [ProductController::class, 'index']);

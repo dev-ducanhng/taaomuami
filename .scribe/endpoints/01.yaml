@@ -1,0 +1,109 @@
+name: User
+description: |-
+
+  Danh sách Api liên quan tới User
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/user
+    metadata:
+      groupName: User
+      groupDescription: |-
+
+        Danh sách Api liên quan tới User
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+    uri: api/user/update
+    metadata:
+      groupName: User
+      groupDescription: |-
+
+        Danh sách Api liên quan tới User
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'Must be at least 1 character. Must not be greater than 25 characters.'
+        required: true
+        example: kbrvduurpgegryxhodyp
+        type: string
+        custom: []
+      email:
+        name: email
+        description: 'Must be a valid email address.'
+        required: false
+        example: mante.larue@example.com
+        type: string
+        custom: []
+      password:
+        name: password
+        description: 'Must be between 4 and 20 characters.'
+        required: true
+        example: '9x4r1fM#~*EuoG#^'
+        type: string
+        custom: []
+      password_confirmation:
+        name: password_confirmation
+        description: 'The value and <code>password</code> must match.'
+        required: false
+        example: null
+        type: string
+        custom: []
+    cleanBodyParameters:
+      name: kbrvduurpgegryxhodyp
+      email: mante.larue@example.com
+      password: '9x4r1fM#~*EuoG#^'
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
