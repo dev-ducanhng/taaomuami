@@ -16,11 +16,14 @@ class CartController extends Controller
         try {
             $user = Auth::user()->id;
             $data =  DB::table('users')
-                ->join('products', 'users.id', '=', 'products.user_id')
-                ->join('categories', 'products.categori_id', '=', 'categories.id')
-                ->select('users.email', 'products.name as product_name', 'users.name as users_name', 'categories.name as categori_name')
+                ->join('carts', 'users.id', '=', 'carts.user_id')
+                ->join('products', 'products.id', '=', 'carts.product_id')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->select('users.email', 'products.name as product_name', 'categories.name as category_name','users.name as users_name')
                 ->where('users.id', $user)
                 ->where('products.deleted_at', null)
+                ->where('carts.deleted_at', null)
+                ->orderBy('carts.id', 'desc')
                 ->get();
 
             return response([
@@ -35,34 +38,34 @@ class CartController extends Controller
         }
     }
 
-    public function store()
-    {
-        $user = Auth::user()->id;
-        try {
-            $data =  DB::table('users')
-                ->join('products', 'users.id', '=', 'products.user_id')
-                ->join('categories', 'products.categori_id', '=', 'categories.id')
-                ->select('users.email', 'products.name as product_name', 'users.name as users_name', 'categories.name as categori_name', 'products.id as product_id', 'categories.id as categori_id')
-                ->where('users.id', $user)
-                ->where('products.deleted_at', null)
-                ->first();
+    // public function store()
+    // {
+    //     $user = Auth::user()->id;
+    //     try {
+    //         $data =  DB::table('users')
+    //             ->join('products', 'users.id', '=', 'products.user_id')
+    //             ->join('categories', 'products.category_id', '=', 'categories.id')
+    //             ->select('users.email', 'products.name as product_name', 'users.name as users_name', 'categories.name as categori_name', 'products.id as product_id', 'categories.id as categori_id')
+    //             ->where('users.id', $user)
+    //             ->where('products.deleted_at', null)
+    //             ->first();
 
-            $dataCart = new Cart();
-            $dataCart->user_id = $user;
-            $dataCart->product_id = $data->product_id;
-            $dataCart->categori_id = $data->categori_id;
-            $dataCart->save();
-            return response([
-                'status_code' => 200,
-                'data' => $dataCart
-            ]);
-        } catch (\Exception $error) {
-            return response()->json([
-                'status_code' => 500,
-                'error' => $error,
-            ]);
-        }
-    }
+    //         $dataCart = new Cart();
+    //         $dataCart->user_id = $user;
+    //         $dataCart->product_id = $data->product_id;
+    //         $dataCart->categori_id = $data->categori_id;
+    //         $dataCart->save();
+    //         return response([
+    //             'status_code' => 200,
+    //             'data' => $dataCart
+    //         ]);
+    //     } catch (\Exception $error) {
+    //         return response()->json([
+    //             'status_code' => 500,
+    //             'error' => $error,
+    //         ]);
+    //     }
+    // }
 
     public function delete()
     {

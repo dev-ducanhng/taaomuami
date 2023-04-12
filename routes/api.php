@@ -50,7 +50,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('/deleted/{id}', [DiscountController::class, 'delete']);
     });
     Route::prefix('products')->group(function () {
-        Route::get('/', [ProductController::class, 'index']);
+        Route::get('/{key_word}', [ProductController::class, 'index']);
         Route::post('/detail/{id}', [ProductController::class, 'show']);
         Route::post('/store', [ProductController::class, 'store']);
         Route::put('/update/{id}', [ProductController::class, 'update']);

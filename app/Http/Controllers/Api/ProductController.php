@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Categories;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,13 +24,14 @@ class ProductController extends Controller
      *
      * API này sẽ trả về thông tin hiển thị sản phẩm và mã giảm giá theo từng sản phẩm 
      *list ra mã giảm giá cho người dùng lựa chọn 
+     *tìm kiếm theo tên sản phẩm 
+     *phân trang
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index(Request $request, $key_word)
     {
         $limit = $request->limit ?? 10;
-
         try {
             $data = DB::table('products')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
@@ -40,12 +42,13 @@ class ProductController extends Controller
                     'categories.name as categories_name'
                 )
                 ->where('products.deleted_at', '=', null)
+                ->where('products.name', 'like', '%' . $key_word . '%')
                 ->paginate($limit);
 
             foreach ($data as $d) {
                 $d->discount = DB::table('discounts')
-                    ->select('discount', 'product_id', DB::raw('count(*)'))
-                    ->groupBy('discount', 'product_id')->where('deleted_at', null)
+                    ->select('discount', DB::raw('count(*)'))
+                    ->groupBy('discount')->where('deleted_at', null)
                     ->where('product_id', $d->id)
                     ->get();
             }
@@ -75,17 +78,23 @@ class ProductController extends Controller
     public function show($id)
     {
         try {
-
-            $dataProduct = DB::table('products')
-                ->join('discounts', 'products.id', '=', 'discounts.product_id')
-                ->select('discount', 'name', 'products.user_id', 'products.image', 'products.category_id')
+            $data = DB::table('products')
+                ->select('name', 'products.user_id', 'products.image', 'products.category_id')
                 ->where('products.deleted_at', '=', null)
                 ->where('products.id',  $id)
                 ->get();
 
+            foreach ($data as $d) {
+                $d->discount = DB::table('discounts')
+                    ->select('discount', DB::raw('count(*)'))
+                    ->where('product_id', $id)
+                    ->groupBy('discount')->where('deleted_at', null)
+                    ->get();
+            }
+
             return response([
                 'status_code' => 200,
-                'data' => $dataProduct
+                'data' => $data
             ]);
         } catch (\Exception $error) {
             return response()->json([
@@ -105,7 +114,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
         $data = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->select(
@@ -116,6 +124,7 @@ class ProductController extends Controller
             )
             ->where('products.deleted_at', '=', null)
             ->get();
+
         foreach ($data as $d) {
             $d->discount = DB::table('discounts')
                 ->select('discount', 'product_id', DB::raw('count(*)'))
@@ -167,44 +176,24 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-
-        $data = DB::table('products')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select(
-                'products.id',
-                'category_id',
-                'products.name as product_name',
-                'categories.name as categories_name'
-            )
-            ->where('products.deleted_at', '=', null)
-            ->get();
-        foreach ($data as $d) {
-            $d->discount = DB::table('discounts')
-                ->select('discount', 'product_id', DB::raw('count(*)'))
-                ->groupBy('discount', 'product_id')->where('deleted_at', null)
-                ->where('product_id', $d->id)
-                ->get();
-        }
         $validator = Validator::make($request->all(), [
             'name' => 'required|min:1|max:25',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'status_code' => 401,
+                'status_code' => 403,
                 'errors' => $validator->errors()
-
             ]);
         }
-
         try {
-            $dataProduct = Product::where('id', $id)
+            $data = Product::where('id', $id)
                 ->update([
                     'name' => $request->name,
                 ]);
             return response([
                 'status_code' => 200,
-                'data' => $dataProduct
+                'data' => $data
             ]);
         } catch (\Exception $error) {
             return response()->json([
